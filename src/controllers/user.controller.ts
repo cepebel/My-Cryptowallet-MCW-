@@ -2,6 +2,11 @@ import { UserService} from "../services/user.service"
 const userService: UserService = new UserService()
 
 export const userController = {
+    ping: (_req: any, res: any)=>{
+        console.log('Se ha hecho ping!')
+        const MESSAGE: string = 'Pong'
+        res.send(MESSAGE)
+    },
     addUser : (req: any, res: any) =>{
         try{
             const newUser = req.body

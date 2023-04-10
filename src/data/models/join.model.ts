@@ -5,7 +5,9 @@ import {Table, Column, Model} from 'sequelize-typescript'
 @Table({
     freezeTableName: true,
     schema: 'mycryptowallet',
-    tableName: 'join'
+    tableName: 'join',
+    createdAt: false,
+    updatedAt: false
 })
 
 export class JoinPojo extends Model{

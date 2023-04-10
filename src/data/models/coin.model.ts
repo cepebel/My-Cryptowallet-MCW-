@@ -4,7 +4,9 @@ import {Table, Column, Model} from 'sequelize-typescript'
 @Table({
     freezeTableName: true,
     schema: 'mycryptowallet',
-    tableName: 'coins'
+    tableName: 'coins',
+    createdAt: false,
+    updatedAt: false
 })
 
 export class CoinPojo extends Model{

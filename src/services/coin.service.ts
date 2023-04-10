@@ -108,29 +108,36 @@ export class CoinService{
     }
 
     async updateJoin(userId: string, coinId: string, amount: number): Promise<string | undefined>{
+        let selectedCoin = await this.getCoinById(coinId).then(coin=>{
+            console.log(coin?.name)
+            return coin
+        })
         let joinByIdResult = await this.getJoinById(userId+coinId)
-        let selectedCoin = await this.getCoinById(coinId)
         if(selectedCoin!=undefined){
             if(amount<selectedCoin.amount){
                 if(joinByIdResult!=undefined){
                     let newAmount = joinByIdResult.amount+amount
+                    console.log(newAmount)
                     if(newAmount>=0){
-                        console.log('estoy aquí! hola')
-                        this._coinRepository.updateJoinAmount(userId+coinId, amount)
+                        console.log('estoy aquí! hola')  
+                        this._coinRepository.updateJoinAmount(userId+coinId, newAmount)
+                        this._coinRepository.updateAmount(coinId, selectedCoin.amount-amount)
                         return 'updated'
                     }
                     else{
                         return 'negative'
                     }   
-                }
+                }  
                 else{
                     let newJoin: JoinDto = new JoinDto(userId, coinId, amount)
                     const dbjoin: JoinPojo = newJoin as JoinPojo
                     await this._coinRepository.addJoin(dbjoin)
+                    await this._coinRepository.updateAmount(coinId, selectedCoin.amount-amount)
                     return 'created'
                 }
             }
             else{
+                console.log(selectedCoin.amount+'only avaliable, not possible')
                 return 'impossible'
             }
         }

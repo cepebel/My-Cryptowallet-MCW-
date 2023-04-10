@@ -16,7 +16,7 @@ app.get('/ping',(_req, res) =>{
 
 app.use('/api/users', userRouter)
 
-app.use('/api/courses', coinRouter)
+app.use('/api/coins', coinRouter)
 
 app.listen(PORT, () =>{
     console.log(`Servidor escuchando en el puerto ${PORT}`)

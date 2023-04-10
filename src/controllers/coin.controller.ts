@@ -89,9 +89,11 @@ export const coinController = {
             const {coinId, amount} = req.body
             coinService.updateAmount(coinId, amount).then(result=>{
                 res=result
+                
             })
-        }catch(error){
+        }catch(error){ 
             console.error(error)
+            res.sendStatus(500)
         }
         
     },
