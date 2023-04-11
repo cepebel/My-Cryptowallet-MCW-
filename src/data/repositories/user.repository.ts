@@ -43,7 +43,14 @@ export class UserRepository{
 
     async getUserByEmail(userEmail: string): Promise<UserPojo|undefined>{
         try{
-            return await this._userRepository.findOne({where: {email: userEmail}})
+            if(userEmail!=undefined){
+                console.log('mi email:'+userEmail)
+                return await this._userRepository.findOne({where: {email: userEmail}})
+            }
+            else{
+                return undefined
+            }
+            
         }catch(error){
             console.error(error)
             return undefined

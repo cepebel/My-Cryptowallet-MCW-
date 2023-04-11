@@ -91,7 +91,7 @@ export const coinController = {
                 res=result
                 
             })
-        }catch(error){ 
+        }catch(error){  
             console.error(error)
             res.sendStatus(500)
         }

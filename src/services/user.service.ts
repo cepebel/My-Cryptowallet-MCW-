@@ -10,6 +10,7 @@ export class UserService{
     }
 
     async addUser(user: UserDto) : Promise<string>{
+        console.log(user)
         const userPromise = await this._userRepository.addUser(user).then(userId=>{
             return userId
         }).catch(error=>{
@@ -50,22 +51,21 @@ export class UserService{
     }
 
     async logIn(email: string, password: string): Promise<UserDto | undefined>{
-        const user = await this.getUserByEmail(email).then(user=>{
-            return user
-        }).catch(error=>{
-            console.error(error)
-            throw error
-        })
-        if(!!user){
-            if(user.password==password){
+        console.log('HOLA HOLA')
+        console.log(email)
+        const userPromise = await this.getUserByEmail(email).then(user=>{
+            if(user?.password==password){
+                console.log(user.password)
                 return user
             }
             else{
                 return undefined
             }
-        }
-        else{
-            return undefined
-        }
+        }).catch(error=>{
+            console.error(error)
+            throw error
+        })
+        console.log('salimos del service')
+        return userPromise
     }
 }

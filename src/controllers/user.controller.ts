@@ -4,12 +4,12 @@ const userService: UserService = new UserService()
 export const userController = {
     ping: (_req: any, res: any)=>{
         console.log('Se ha hecho ping!')
-        const MESSAGE: string = 'Pong'
+        const MESSAGE: string = "Pong"
         res.send(MESSAGE)
     },
     addUser : (req: any, res: any) =>{
         try{
-            const newUser = req.body
+            const {newUser} = req.body
             userService.addUser(newUser).then(result =>{
                 res.json(result)
             })
@@ -50,9 +50,10 @@ export const userController = {
     },
     logIn: (req: any, res: any) =>{
         try{
-            const email = req.params.email
-            const password = req.params.password
-            userService.logIn(email,password)
+            const {email, password} = req.body
+            userService.logIn(email,password).then(result=>{
+                res.json(result)
+            })
         }catch(error){
             console.error(error)
             res.sendStatus(500)

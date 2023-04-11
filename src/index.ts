@@ -5,6 +5,8 @@ import coinRouter from './routes/coin.routes'
 // para redirigir a los gatos .redirect()
 const app = express()
 app.use(express.json())
+var cors = require('cors');
+app.use(cors());
 
 const PORT = 3142
 
