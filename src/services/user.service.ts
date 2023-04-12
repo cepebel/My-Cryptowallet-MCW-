@@ -68,4 +68,15 @@ export class UserService{
         console.log('salimos del service')
         return userPromise
     }
+
+    async updateBudget(userId: string, budget: number): Promise<number>{
+        console.log('Bienvenido a update budget')
+        const updatePromise = await this._userRepository.updateBudget(userId, budget).then(res=>{
+            return res
+        }).catch(error=>{
+            console.error(error)
+            throw error
+        })
+        return updatePromise
+    }
 }

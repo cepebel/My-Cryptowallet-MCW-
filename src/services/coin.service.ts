@@ -53,6 +53,7 @@ export class CoinService{
     }
 
     async getUserJoins(id:string): Promise<JoinDto[]>{
+        console.log('Me traigo todas las joins del usuario')
         const joinsPromise = await this._coinRepository.getUserJoins(id).then(joins=>{
             return joins
         }).catch(error=>{
@@ -64,9 +65,11 @@ export class CoinService{
 
     async getUserCoins(id:string): Promise<CoinDto[]| undefined>{
         let userJoins = await this.getUserJoins(id)
+        console.log(id)
         if(userJoins.length>0){
             let coursesIdArray = []
             for(let i=0; i<userJoins.length; i++){
+                console.log('id de la modeda del usuario:'+userJoins[i].coinId)
                 coursesIdArray.push(userJoins[i].coinId)
             }
             const coinPromise = await this._coinRepository.getCoinsById(coursesIdArray)
@@ -109,20 +112,28 @@ export class CoinService{
 
     async updateJoin(userId: string, coinId: string, amount: number): Promise<string | undefined>{
         let selectedCoin = await this.getCoinById(coinId).then(coin=>{
-            console.log(coin?.name)
+            console.log('Compro moneda'+coin?.name)
             return coin
         })
         let joinByIdResult = await this.getJoinById(userId+coinId)
         if(selectedCoin!=undefined){
             if(amount<selectedCoin.amount){
+                console.log('Selected coin amount:'+selectedCoin.amount)
                 if(joinByIdResult!=undefined){
-                    let newAmount = joinByIdResult.amount+amount
+                    let newAmount = joinByIdResult.amount*(1.0)+amount*(1.0)
+                    console.log('Join amount:'+joinByIdResult.amount*(1.0)+'amount'+amount*(1.0))
                     console.log(newAmount)
-                    if(newAmount>=0){
+                    if(newAmount>0){
                         console.log('estoy aquí! hola')  
                         this._coinRepository.updateJoinAmount(userId+coinId, newAmount)
-                        this._coinRepository.updateAmount(coinId, selectedCoin.amount-amount)
+                        this._coinRepository.updateAmount(coinId, selectedCoin.amount*(1.0)-amount*(1.0))
                         return 'updated'
+                    }
+                    else if(newAmount == 0){
+                        console.log('Lo vendo todo')
+                        this._coinRepository.deleteJoin(userId+coinId)
+                        this._coinRepository.updateAmount(coinId, selectedCoin.amount*(1.0)-amount*(1.0))
+                        return 'allsell'
                     }
                     else{
                         return 'negative'

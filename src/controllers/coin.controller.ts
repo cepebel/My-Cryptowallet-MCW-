@@ -66,7 +66,7 @@ export const coinController = {
         try{
             const {userId, coinId,  amount}  = req.body
             coinService.updateJoin(userId, coinId, amount).then(result=>{
-                res = result
+                res.json(result)
             })
         }catch(error){
             console.error(error)
@@ -77,7 +77,7 @@ export const coinController = {
         try{
             const coinId = req.params.id
             coinService.checkAmount(coinId).then(result=>{
-                res = result
+                res.json(result)
             })
         }catch(error){
             console.error(error)
@@ -88,7 +88,7 @@ export const coinController = {
         try{
             const {coinId, amount} = req.body
             coinService.updateAmount(coinId, amount).then(result=>{
-                res=result
+                res.json(result)
                 
             })
         }catch(error){  
@@ -97,4 +97,15 @@ export const coinController = {
         }
         
     },
+    getUserCoins: (req: any, res: any)=>{
+        try{
+            const userId = req.params.id
+            coinService.getUserCoins(userId).then(result=>{
+                res.json(result)
+            })
+        }catch(error){
+            console.error(error)
+            res.sendStatus(500)
+        }
+    }
 }

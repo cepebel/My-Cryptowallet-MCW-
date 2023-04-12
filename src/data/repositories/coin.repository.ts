@@ -1,7 +1,9 @@
+
 import { connect } from './../config/coin.db.config';
 import { CoinPojo } from '../models/coin.model';
 import { JoinPojo } from '../models/join.model';
 import { v4 as uuid } from 'uuid'
+
 
 export class CoinRepository{
     _db : any = {}
@@ -93,9 +95,7 @@ export class CoinRepository{
 
     async updateJoinAmount(joinId: string, newAmount: number): Promise<boolean>{
         try{
-            let selectedJoin = await this._joinRepository.findByPk(joinId)
-            await selectedJoin.set({amount:newAmount})
-            await selectedJoin.save()
+            await this._joinRepository.update({amount: newAmount}, {where:{joinId:joinId}})
             return true
         }catch(error){
             console.error(error)
@@ -103,14 +103,15 @@ export class CoinRepository{
         }
     }
 
-    async deleteJoin(joinToDelete: JoinPojo): Promise<string>{
+    async deleteJoin(joinId: string): Promise<string>{
         try{
-            console.log('Repository deleting: '+joinToDelete.joinId)
-            await joinToDelete.destroy()
+            console.log('Repository deleting: '+joinId)
+            this._joinRepository.destroy({where: {joinId: joinId}})
+            //await joinToDelete.destroy()
             return 'Successfully-withdrawn'
         }catch(error){
             console.error(error)
-            return 'fail-to-withdraw-course-'+ joinToDelete.coinId
+            return 'fail-to-withdraw-course-'
         }
 
     }
@@ -127,6 +128,7 @@ export class CoinRepository{
 
     async updateAmount(coinId: string, newAmount: number): Promise<boolean>{ 
         try{
+            console.log('new Amount:'+newAmount)
             const coin = await this._coinRepository.findByPk(coinId)
             await coin.set({amount:newAmount})
             await coin.save()

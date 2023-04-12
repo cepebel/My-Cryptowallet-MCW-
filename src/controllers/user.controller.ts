@@ -58,6 +58,17 @@ export const userController = {
             console.error(error)
             res.sendStatus(500)
         }
+    },
+    updateBudget: (req:any, res: any)=>{
+        try{
+            const {userId, budget} = req.body
+            userService.updateBudget(userId, budget).then(result=>{
+                res.json(result)
+            })
+        }catch(error){
+            console.error(error)
+            res.sendStatus(500)
+        }
     }
 
 }

@@ -15,6 +15,7 @@ export class UserRepository{
     async addUser(newUser: UserDto): Promise<string>{
         try{
             newUser.userId = uuid()
+            newUser.budget = 0
             newUser = await this._userRepository.create(newUser)
             return newUser.userId
         }catch(error){
@@ -66,6 +67,17 @@ export class UserRepository{
         }catch(error){
             console.error(error)
             return false
+        }
+    }
+
+    async updateBudget(userId: string, newBudget: number): Promise<number>{
+        console.log('Repositorio; update BUdget')
+        try{
+            this._userRepository.update({budget: newBudget}, {where: {userId: userId}})
+            return +newBudget
+        }catch(error){
+            console.error(error)
+            return -1
         }
     }
 }

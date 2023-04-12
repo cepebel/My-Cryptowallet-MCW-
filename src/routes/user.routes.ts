@@ -8,6 +8,7 @@ router.get('/get/:id', userController.getUserById)
 router.get('/get/email/:email', userController.getUserByEmail)
 router.post('/login', userController.logIn)
 router.get('/ping', userController.ping)
+router.post('/update/budget', userController.updateBudget)
 
 export default router
 module.exports = router
